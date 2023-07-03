@@ -4,6 +4,7 @@ import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.getcapacitor.JSObject
 import io.ionic.portals.PortalsPlugin
+import io.ionic.portals.PortalsPubSub
 import org.json.JSONObject
 
 internal class PortalsPubSubModule(reactContext: ReactApplicationContext) :
@@ -12,7 +13,7 @@ internal class PortalsPubSubModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun subscribe(topic: String, promise: Promise) {
-        val reference = PortalsPlugin.subscribe(topic) { result ->
+        val reference = PortalsPubSub.shared.subscribe(topic) { result ->
             reactApplicationContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                 .emit("PortalsSubscription", result.toJSObject().toReactMap())
@@ -23,12 +24,12 @@ internal class PortalsPubSubModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun publish(topic: String, data: ReadableMap) {
-        PortalsPlugin.publish(topic, data.toJSObject())
+        PortalsPubSub.shared.publish(topic, data.toJSObject())
     }
 
     @ReactMethod
     fun unsubscribe(topic: String, reference: Int) {
-        PortalsPlugin.unsubscribe(topic, reference)
+        PortalsPubSub.shared.unsubscribe(topic, reference)
     }
 
     // These are required to be an EventEmitter in javascript
