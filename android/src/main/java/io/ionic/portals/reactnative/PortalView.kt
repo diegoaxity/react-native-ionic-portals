@@ -71,8 +71,6 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         setupLayout(parentView)
 
         val portalFragment = PortalFragment(portal.portal)
-        portalFragment.addWebViewListener((listener) -> {
-        })
         // if (portal.onFCP != null || portal.onFID != null || portal.onTTFB != null) {
         //     portalFragment.webVitalsCallback = { metric, duration ->
         //         when (metric) {
